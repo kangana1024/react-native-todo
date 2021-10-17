@@ -1,10 +1,9 @@
-import { Text } from "native-base"
 import React from "react"
-import { View } from "react-native"
-interface CreateFormProps {
+import { View,Text } from "react-native"
+export interface CreateFormProps {
 
 }
-const CreateForm: React.FC<CreateFormProps> = () => {
+const CreateForm: React.ReactNode = () => {
 	return (
 		<View>
 			<Text style={{
