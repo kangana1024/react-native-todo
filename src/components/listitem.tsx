@@ -10,6 +10,7 @@ export interface TodoItem {
 interface ListItemProps {
 	item: TodoItem
 }
+
 export const ListItem: React.FC<ListItemProps> = ({ item }) => {
 	return (<TouchableWithoutFeedback
 		onPress={() => {
