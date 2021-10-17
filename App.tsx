@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -11,12 +12,8 @@ import {
 import {
   Colors,
 } from 'react-native/Libraries/NewAppScreen'
-interface TodoItem {
-  id: number
-  todo: string
-  detail: string
-  status: string
-}
+import { ListItem, TodoItem } from './src/components/listitem';
+
 const App = () => {
   const [dataSource, setDataSource] = useState<TodoItem[]>([])
   const isDarkMode = useColorScheme() === 'dark'
@@ -25,24 +22,44 @@ const App = () => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   }
 
+  const fetchData = async () => {
+    try {
+      const res = await fetch("https://apidemo.showkhun.co/lists")
+      const data = await res.json()
+      if (data?.lists) {
+        setDataSource([...data.lists])
+      }
+    } catch (error) {
+      console.log('Error : ', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData().then()
+  }, [])
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View>
-        <Text style={{
-          fontSize: 25,
-          fontWeight: 'bold'
-        }}>Todo Lists</Text>
+      <View style={{
+        padding:6
+      }}>
+        <View>
+          <Text style={{
+            fontSize: 25,
+            fontWeight: 'bold'
+          }}>Todo Lists</Text>
+        </View>
+        <FlatList
+          data={dataSource}
+          renderItem={({ item }) => {
+            return (
+              <ListItem item={item} />
+            )
+          }}
+          keyExtractor={item => item.id + ""}
+        />
       </View>
-      <FlatList
-        data={dataSource}
-        renderItem={({ item }) => {
-          return (
-            <Text>{JSON.stringify(item)}</Text>
-          )
-        }}
-        keyExtractor={item => item.id + ""}
-      />
     </SafeAreaView>
   );
 };
