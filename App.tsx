@@ -16,6 +16,7 @@ import { ListItem, TodoItem } from './src/components/listitem';
 
 const App = () => {
   const [dataSource, setDataSource] = useState<TodoItem[]>([])
+  
   const isDarkMode = useColorScheme() === 'dark'
 
   const backgroundStyle = {
